@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hoet Eyewear Mirror</title>
+    <!-- De pas-app staat op een ander domein, en de browser begint daar pas aan te bouwen
+         zodra hij het iframe onderaan tegenkomt: DNS, TLS en verbinding vallen dan achter
+         het parsen van deze pagina. Vooraf verbinden haalt dat naar voren. -->
+    <link rel="preconnect" href="https://hoet.owiz.fittingbox.com" crossorigin>
+    <link rel="dns-prefetch" href="https://hoet.owiz.fittingbox.com">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
@@ -32,16 +37,17 @@
             align-items: flex-end;
             padding: 1em 0;
         }
+        /* Het logo is het enige eigen beeld op deze pagina en dus wat de meting als
+           grootste element ziet. Als achtergrondafbeelding werd het pas aangevraagd nadat
+           de stijl was gelezen en de doos berekend; als <img> in de opmaak ziet de browser
+           het meteen bij het parsen staan. Zelfde doos, zelfde uitsnede: object-fit doet
+           hier wat background-size: contain deed. */
         .header__logo {
-            background-size: contain;
-            background-position: center center;
-            background-repeat: no-repeat;
-            width: 200px;
-        }
-        .header__logo:before {
-            content: '';
             display: block;
-            padding-bottom: 60%;
+            width: 200px;
+            aspect-ratio: 5 / 3;
+            object-fit: contain;
+            object-position: center center;
         }
         iframe {
             display: block;
@@ -62,7 +68,11 @@
             <div class="row">
                 <div class="col">
                     <div class="header__inner">
-                        <div class="header__logo" style="background-image: url('logo-white.png');"></div>
+                        <picture>
+                            <source srcset="logo-white.webp" type="image/webp">
+                            <img class="header__logo" src="logo-white.png" alt="Hoet"
+                                 width="200" height="120" fetchpriority="high">
+                        </picture>
                     </div>
                 </div>
             </div>
