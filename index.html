@@ -24,6 +24,10 @@
          het parsen van deze pagina. Vooraf verbinden haalt dat naar voren. -->
     <link rel="preconnect" href="https://hoet.owiz.fittingbox.com" crossorigin>
     <link rel="dns-prefetch" href="https://hoet.owiz.fittingbox.com">
+    <!-- Deze pagina is overal met een tracking-staart achter het adres te bereiken
+         ("?utm_source=..."), en elk van die adressen is voor een zoekmachine een aparte
+         pagina met dezelfde inhoud. Deze regel wijst er één aan als het echte. -->
+    <link rel="canonical" href="https://hoet-eyewear-mirror.com/">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <style>
@@ -51,7 +55,7 @@
         }
         /* Het logo is het enige eigen beeld op deze pagina en dus wat de meting als
            grootste element ziet. Als achtergrondafbeelding werd het pas aangevraagd nadat
-           de stijl was gelezen en de doos berekend; als <img> in de opmaak ziet de browser
+           de stijl was gelezen en de doos berekend; als img-element in de opmaak ziet de browser
            het meteen bij het parsen staan. Zelfde doos, zelfde uitsnede: object-fit doet
            hier wat background-size: contain deed. */
         .header__logo {
@@ -60,6 +64,20 @@
             aspect-ratio: 5 / 3;
             object-fit: contain;
             object-position: center center;
+        }
+        /* Weggeschoven in plaats van display:none of visibility:hidden: wat niet getekend
+           wordt, wordt door een schermlezer ook niet voorgelezen, en dan lost de kop het
+           probleem niet op dat hij moest oplossen. */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+            border: 0;
         }
         iframe {
             display: block;
@@ -90,6 +108,11 @@
             </div>
         </div>
     </header>
+    <!-- De pagina had geen enkele kop. Wie hem met een schermlezer opent hoort daardoor
+         "Hoet" (het logo) en daarna andermans app in een frame, en nooit waar hij is
+         beland. Zichtbaar staat het er wel al, in het logo en in de app zelf, dus deze
+         kop wordt weggeschoven in plaats van getekend. -->
+    <h1 class="visually-hidden">Hoet Eyewear Mirror</h1>
     <iframe id="mirror" data-src="https://hoet.owiz.fittingbox.com" title="Hoet Eyewear Mirror"
             allow="microphone; camera"></iframe>
     <noscript>
